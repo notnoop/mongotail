@@ -2,6 +2,7 @@ package main
 
 import (
 	"context"
+	"encoding/base64"
 	"flag"
 	"fmt"
 	"log"
@@ -66,11 +67,12 @@ func main() {
 	}
 
 	for stream.Next(ctx) {
-		fmt.Printf(`{"received": "%s", "size": %d, "data": %s}
+		fmt.Printf(`{"received": "%s", "size": %d, "data": %s, "raw": "%s"}
 `,
 			time.Now().UTC().Format(time.RFC3339),
 			len(stream.Current),
 			stream.Current,
+			base64.StdEncoding.EncodeToString([]byte(stream.Current)),
 		)
 	}
 
